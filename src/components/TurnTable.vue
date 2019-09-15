@@ -318,6 +318,8 @@ export default {
     &__arrow {
       @include positionCenter(rotate(270deg));
       left: 100%;
+      transform: translate(-106%, -107%) rotate(180deg);
+
       border: $arrowHeight solid transparent;
       border-top: $arrowWidth solid $buttonColor;
     }
