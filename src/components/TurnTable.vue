@@ -1,5 +1,13 @@
 <template>
 <div class="container">
+  <modal name="hello-world">
+    文字：
+    <input type="text" v-model="itemText">
+    <button @click="addItem">新增</button>
+  </modal>
+  <button @click="add">新增</button>
+  <button @click="reset">清除</button>
+
     <div class="turnTable" v-show="true">
         <div class="turnTable__body">
           <canvas class="turnTable__canvas" :class="animitionType"
@@ -36,7 +44,7 @@ export default {
       config: {},
       defaultConfig: {
         autoStop: true,
-        runTime: 2,
+        runTime: 1,
         rollBackRange: 0.25,
         showAlert: true,
         baseSize: 500,
@@ -47,7 +55,8 @@ export default {
         textColor: '#fff',
         buttonColor: '#f6d7d7',
         buttonText: 'GO'
-      }
+      },
+      itemText: ''
     }
   },
   watch: {
@@ -76,7 +85,7 @@ export default {
     /** 計算區塊機率值總和 */
     countDataChance () {
       let totalChance = 0
-      this.gifts.forEach((data) => {
+      this.defaultGifts.forEach((data) => {
         totalChance += data.chance
       })
       return totalChance
@@ -91,9 +100,24 @@ export default {
     }
   },
   methods: {
+    reset () {
+      this.defaultGifts = this.defaultGifts.slice(0, 2)
+      this.buideTurnTable()
+    },
+    add () {
+      this.$modal.show('hello-world')
+    },
+    addItem () {
+      this.$modal.hide('hello-world')
+      this.defaultGifts.push({ chance: 10, text: this.itemText, textColor: '', textSize: '', backgroundColor: '', edit: false })
+      // this.gift = Object.assign({}, this.defaultGift)
+      // this.gifts = this.getDefaultGfits()
+      this.buideTurnTable()
+    },
     getDefaultGiftBackgroundColor (index) {
-      const number = index || this.gifts.length
-      return number % 2 === 0 ? this.config.doubleColor : this.config.singleColor
+      // const number = index || this.defaultGifts.length
+      // return number % 2 === 0 ? this.config.doubleColor : this.config.singleColor
+      return index % 2 === 0 ? this.config.doubleColor : this.config.singleColor
     },
     getDefaultGfits () {
       return Array.from(this.defaultGifts)
@@ -115,8 +139,10 @@ export default {
       this.giftDegs = []
       let lastAngle = 0
       // 內部區塊繪製
-      this.gifts.forEach((gift, index) => {
+      this.defaultGifts.forEach((gift, index) => {
+        console.log('in foreach, idnex:', index)
         // 計算角度(全部資料機率 / 單片機率 * 360)
+        console.log('此時的機率總和:', this.countDataChance)
         const deg = (gift.chance / this.countDataChance) * 360
         // 計算弧度(角度 * PI / 180)，
         const angle = deg * (Math.PI / 180)
@@ -195,6 +221,7 @@ export default {
     },
     /** 建立轉盤 */
     buideTurnTable () {
+      console.log('呼叫 build Turn table')
       // CSS值設定
       // document.documentElement 為 html 這個元素
       document.documentElement.style.setProperty('--turnTableSize', `${this.config.baseSize + 20}px`)
@@ -219,7 +246,7 @@ export default {
   },
   beforeMount () {
     this.config = this.getDefaultConfig()
-    this.gifts = this.getDefaultGfits()
+    // this.gifts = this.getDefaultGfits()
   },
   mounted () {
     this.buideTurnTable()
