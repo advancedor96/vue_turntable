@@ -1,12 +1,12 @@
 <template>
 <div class="container">
-  <modal name="hello-world">
+  <!-- <modal name="hello-world">
     文字：
     <input type="text" v-model="itemText">
     <button @click="addItem">新增</button>
   </modal>
   <button @click="add">新增</button>
-  <button @click="reset">清除</button>
+  <button @click="reset">清除</button> -->
 
     <div class="turnTable" v-show="true">
         <div class="turnTable__body">
@@ -227,7 +227,7 @@ export default {
       document.documentElement.style.setProperty('--turnTableSize', `${this.config.baseSize + 20}px`)
       document.documentElement.style.setProperty('--buttonSize', `${this.config.baseSize / 3.5}px`)
       document.documentElement.style.setProperty('--buttonFontSize', `${this.config.baseSize / 10}px`)
-      document.documentElement.style.setProperty('--arrowHeight', `${this.config.baseSize / 7}px`)
+      document.documentElement.style.setProperty('--arrowHeight', `${this.config.baseSize / 8}px`)
       document.documentElement.style.setProperty('--arrowWidth', `${this.config.baseSize / 5}px`)
       document.documentElement.style.setProperty('--buttonColor', `${this.config.buttonColor}`)
       document.documentElement.style.setProperty('--runTime', `${this.config.runTime}s`)
@@ -345,7 +345,7 @@ export default {
     &__arrow {
       @include positionCenter(rotate(270deg));
       left: 100%;
-      transform: translate(-106%, -107%) rotate(180deg);
+      transform: translate(-113%, -107%) rotate(180deg);
 
       border: $arrowHeight solid transparent;
       border-top: $arrowWidth solid $buttonColor;
